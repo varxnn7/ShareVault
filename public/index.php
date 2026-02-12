@@ -53,7 +53,7 @@
         <div class="result-card" id="resultArea">
             <p>Your file is ready!</p>
             <div class="link-box">
-                <input type="text" id="shareLink" value="https://swiftshare.io/sh/xK92bL" readonly>
+                <input type="text" id="shareLink" value="#" readonly>
                 <button onclick="copyLink()"><i class='bx bx-copy'></i></button>
             </div>
         </div>
