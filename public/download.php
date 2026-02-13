@@ -1,6 +1,11 @@
 <?php
 require_once '../includes/db.php';
+session_start();
 
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    die("Access Denied. Please login to download files.");
+}
 $fileKey = $_GET['id'] ?? '';
 $stmt = $pdo->prepare("SELECT * FROM files WHERE file_key = ?");
 $stmt->execute([$fileKey]);
