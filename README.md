@@ -16,6 +16,8 @@ Backend file handling using PHP
 
 Organized server-side file storage
 
+User Can register and login easily
+
 Validation for file types and size (if implemented)
 
 🛠️ Tech Stack:
@@ -25,3 +27,4 @@ Frontend: HTML, CSS, JavaScript
 Backend: PHP
 
 Server: Apache / XAMPP (Localhost)
+
