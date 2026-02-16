@@ -1,5 +1,5 @@
 /**
- * ShareVault - Fully Optimized script.js
+ * ShareVault - Fully Optimized script.js with Loader & Auto-Redirect
  */
 
 const uploadForm = document.getElementById('uploadForm');
@@ -11,6 +11,7 @@ const accessMode = document.getElementById('accessMode');
 const passwordContainer = document.getElementById('passwordContainer');
 const toggleList = document.getElementById('toggleList');
 const fileList = document.getElementById('fileList');
+const uploadLoader = document.getElementById('uploadLoader'); // Loader overlay
 
 // --- 1. Dynamic File List with Delete ---
 if (toggleList) {
@@ -97,7 +98,6 @@ if (uploadForm) {
             return;
         }
 
-        // --- FILE SIZE LIMIT CHECK ---
         const MAX_SIZE_MB = 50;
         const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
         if (file.size > MAX_SIZE_BYTES) {
@@ -105,19 +105,19 @@ if (uploadForm) {
             return;
         }
 
+        // Show Loader Overlay
+        uploadLoader.style.display = 'flex';
+
         const formData = new FormData();
         formData.append('file', file);
         formData.append('accessMode', accessMode.value);
         formData.append('password', document.getElementById('filePassword').value);
 
-        const submitBtn = uploadForm.querySelector('button[type="submit"]');
         const progressContainer = document.getElementById('progressContainer');
         const progressBarFill = document.getElementById('progressBarFill');
         const progressPercent = document.getElementById('progressPercent');
 
         progressContainer.style.display = 'block';
-        submitBtn.disabled = true;
-        submitBtn.innerText = "Uploading...";
 
         const xhr = new XMLHttpRequest();
 
@@ -133,33 +133,22 @@ if (uploadForm) {
             try {
                 const result = JSON.parse(xhr.responseText);
                 if (xhr.status === 200 && result.status === 'success') {
-                    resultArea.style.display = 'block';
-                    const fullURL = window.location.origin + window.location.pathname.replace('index.php', '') + result.link;
-                    shareLink.value = fullURL;
-
-                    uploadForm.reset();
-                    dropZone.querySelector('p').innerHTML = "Drag & drop files or <span>Browse</span>";
-                    dropZone.style.borderColor = "rgba(255, 255, 255, 0.2)";
+                    // Success! Redirect to the Thank You / Success page
+                    window.location.href = "download_success.php";
                 } else {
+                    uploadLoader.style.display = 'none';
                     alert("Upload failed: " + (result.message || "Unknown error"));
                 }
             } catch (err) {
+                uploadLoader.style.display = 'none';
                 alert("Server error. Please check your connection.");
             }
-            resetUI();
         };
 
         xhr.onerror = () => {
+            uploadLoader.style.display = 'none';
             alert("An error occurred during upload.");
-            resetUI();
         };
-
-        function resetUI() {
-            submitBtn.disabled = false;
-            submitBtn.innerText = "Generate Secure Link";
-            progressContainer.style.display = 'none';
-            progressBarFill.style.width = '0%';
-        }
 
         xhr.open('POST', 'upload_handler.php');
         xhr.send(formData);

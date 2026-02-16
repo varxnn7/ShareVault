@@ -81,6 +81,7 @@ body {
 
 /* --- The Glass Card --- */
 .upload-card {
+    position: relative;
     background: var(--card-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -89,6 +90,60 @@ body {
     border-radius: 28px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
         inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* --- Modern Upload Loader --- */
+.loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    display: none;
+    /* Hidden by default */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 28px;
+    z-index: 100;
+    animation: fadeIn 0.3s ease;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-left-color: var(--primary);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px var(--primary-glow));
+}
+
+.loader-text {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    letter-spacing: 0.5px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* --- Interactive Drop Zone --- */
