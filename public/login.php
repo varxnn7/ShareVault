@@ -1,5 +1,4 @@
 <?php
-// 1. Logic MUST come before ANY HTML
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -21,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['username'] = $user['username'];
 
         session_write_close();
-        // This will now work because no HTML has been sent yet
         header("Location: index.php");
         exit;
     } else {
