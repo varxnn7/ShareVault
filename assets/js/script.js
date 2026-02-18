@@ -14,7 +14,6 @@ const toggleList = document.getElementById('toggleList');
 const fileList = document.getElementById('fileList');
 const uploadLoader = document.getElementById('uploadLoader');
 
-// --- 1. Dynamic File List with Delete ---
 if (toggleList) {
     toggleList.addEventListener('click', async () => {
         if (fileList.style.display === 'none' || fileList.style.display === '') {
