@@ -39,12 +39,10 @@
     </div>
 
     <script>
-        /**
-         * 1. Speech API - Announce Success
-         */
+        // Voice Feature
         function speakSuccess(message) {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // Stop any overlapping voices
+                window.speechSynthesis.cancel();
                 const utterThis = new SpeechSynthesisUtterance(message);
                 utterThis.pitch = 1.1;
                 utterThis.rate = 1.0;
@@ -53,9 +51,6 @@
             }
         }
 
-        /**
-         * 2. Redirect & Timer Logic
-         */
         let timeLeft = 5;
         const countdownEl = document.getElementById('countdown');
         const timerBar = document.getElementById('timerBar');
@@ -64,7 +59,6 @@
             timeLeft--;
             countdownEl.textContent = timeLeft;
 
-            // Update progress bar width
             const progress = (timeLeft / 5) * 100;
             timerBar.style.width = progress + "%";
 
@@ -74,11 +68,7 @@
             }
         }, 1000);
 
-        /**
-         * 3. Initialization
-         */
         window.addEventListener('load', () => {
-            // Trigger Voice after a short delay so user is settled
             setTimeout(() => {
                 speakSuccess("File downloaded successfully. Thank you for using Share Vault.");
             }, 600);

@@ -4,12 +4,11 @@ require_once '../includes/db.php';
 
 $fileKey = $_GET['id'] ?? '';
 
-// 1. Fetch file details
 $stmt = $pdo->prepare("SELECT * FROM files WHERE file_key = ?");
 $stmt->execute([$fileKey]);
 $file = $stmt->fetch();
 
-// 2. Redirect if not found
+
 if (!$file) {
     header("Location: index.php");
     exit;
@@ -18,7 +17,7 @@ if (!$file) {
 $isRestricted = ($file['access_mode'] === 'restricted');
 $error = "";
 
-// 3. Password Verification
+// Verify Password
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
     if (password_verify($_POST['password'], $file['password'])) {
         $_SESSION['unlocked_' . $fileKey] = true;
@@ -90,10 +89,8 @@ if (!$isUnlocked):
     </div>
 
     <script>
-        // Start download stream
         window.location.href = "process_stream.php?id=<?php echo $fileKey; ?>";
         
-        // Wait 2 seconds, then show success page
         setTimeout(() => {
             window.location.href = "download_success.php";
         }, 2000);
