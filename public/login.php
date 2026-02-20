@@ -32,46 +32,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | ShareVault</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body>
+<body class="auth-page">
     <div class="container">
-        <header>
-            <h1>Welcome Back</h1>
-            <p>Login to your secure vault.</p>
-        </header>
+        <div class="upload-card auth-card">
+            <div class="auth-header">
+                <i class='bx bxs-lock-open' style="font-size: 3rem; color: var(--primary);"></i>
+                <h2>Welcome Back</h2>
+                <p>Securely access your vault</p>
+            </div>
 
-        <div class="upload-card">
-            <form method="POST">
-                <div class="setting-item">
-                    <label>Username</label>
-                    <input type="text" name="username" placeholder="Username" class="password-input" required autofocus>
+            <?php if (isset($_GET['error'])): ?>
+                <div class="error-msg" style="color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 0.9rem;">
+                    Invalid username/email or password.
                 </div>
+            <?php endif; ?>
+
+            <form action="login_handler.php" method="POST">
+                <div class="setting-item">
+                    <label>Username or Email</label>
+                    <div class="search-wrapper">
+                        <input type="text" name="login_identity" class="password-input" placeholder="Enter your credentials" required>
+                    </div>
+                </div>
+
                 <div class="setting-item">
                     <label>Password</label>
-                    <input type="password" name="password" placeholder="Password" class="password-input" required>
+                    <div class="search-wrapper">
+                        <input type="password" name="password" class="password-input" placeholder="Enter password" required>
+                    </div>
                 </div>
 
-                <?php if ($error): ?>
-                    <p class="error-text" style="color: #ef4444; font-size: 0.8rem; margin-bottom: 15px;">
-                        <?php echo $error; ?>
-                    </p>
-                <?php endif; ?>
-
-                <?php if (isset($_GET['registered'])): ?>
-                    <p style="color: #10b981; font-size: 0.8rem; margin-bottom: 15px;">
-                        Registration successful! Please login.
-                    </p>
-                <?php endif; ?>
-
-                <button type="submit" class="btn-primary">Login</button>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 20px;">
+                    <i class='bx bx-log-in-circle'></i> Login
+                </button>
             </form>
 
-            <p style="text-align:center; margin-top:15px; font-size:0.8rem;">
-                New here? <a href="register.php" style="color:var(--primary); text-decoration: none;">Create an account</a>
-            </p>
+            <div class="auth-footer">
+                <p>New here? <a href="register.php">Create an account</a></p>
+            </div>
         </div>
     </div>
 </body>

@@ -1,9 +1,9 @@
+// New Branch
 <?php
 session_start();
 require_once '../includes/db.php';
 
 header('Content-Type: application/json');
-
 // Authorization Check
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
