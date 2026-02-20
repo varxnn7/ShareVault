@@ -61,16 +61,28 @@ if (!isset($_SESSION['user_id'])) {
 
                 <div class="settings">
                     <div class="setting-item">
-                        <label for="accessMode">Access Control</label>
-                        <select id="accessMode" name="accessMode">
-                            <option value="public">🔓 Public (Anyone with link)</option>
-                            <option value="restricted">🔒 Restricted (Password required)</option>
+                        <label>Access Mode</label>
+                        <select id="accessMode">
+                            <option value="public">Public (Anyone with link)</option>
+                            <option value="restricted">Restricted (Password required)</option>
                         </select>
                     </div>
 
-                    <div class="setting-item" id="passwordContainer" style="display: none; margin-top: 10px;">
-                        <label for="filePassword">Set Password</label>
-                        <input type="password" id="filePassword" name="password" placeholder="Enter secure password" class="password-input">
+                    <div class="setting-item" style="position: relative;">
+                        <label>Share with (Email)</label>
+
+                        <div id="selectedEmails" class="selected-tags-container"></div>
+
+                        <div class="search-wrapper" style="position: relative;">
+                            <input type="text" id="emailSearch" class="password-input" placeholder="Search emails..." autocomplete="off">
+
+                            <div id="emailDropdown" class="email-dropdown-child"></div>
+                        </div>
+                    </div>
+
+                    <div class="setting-item" id="passwordContainer" style="display: none;">
+                        <label>Set Password</label>
+                        <input type="password" id="filePassword" class="password-input" placeholder="Create a password...">
                     </div>
                 </div>
 

@@ -27,32 +27,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <meta charset="UTF-8">
-    <title>Join ShareVault</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | ShareVault</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body>
+<body class="auth-page">
     <div class="container">
-        <header>
-            <h1>Create Account</h1>
-            <p>Join the secure vault community.</p>
-        </header>
-        <div class="upload-card">
-            <form method="POST">
+        <div class="upload-card auth-card">
+            <div class="auth-header">
+                <i class='bx bxs-cloud-upload' style="font-size: 3rem; color: var(--primary);"></i>
+                <h2>Create Account</h2>
+                <p>Join ShareVault for secure file sharing</p>
+            </div>
+
+            <form action="register_handler.php" method="POST">
                 <div class="setting-item">
                     <label>Username</label>
-                    <input type="text" name="username" class="password-input" required>
+                    <div class="search-wrapper">
+                        <input type="text" name="username" class="password-input" placeholder="Choose a username" required>
+                    </div>
                 </div>
+
+                <div class="setting-item">
+                    <label>Email Address</label>
+                    <div class="search-wrapper">
+                        <input type="email" name="email" class="password-input" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
                 <div class="setting-item">
                     <label>Password</label>
-                    <input type="password" name="password" class="password-input" required>
+                    <div class="search-wrapper">
+                        <input type="password" name="password" class="password-input" placeholder="Create a password" required>
+                    </div>
                 </div>
-                <?php if ($message): ?> <p class="error-text"><?php echo $message; ?></p> <?php endif; ?>
-                <button type="submit" class="btn-primary">Sign Up</button>
+
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 20px;">
+                    <i class='bx bx-user-plus'></i> Register
+                </button>
             </form>
-            <p style="text-align:center; margin-top:15px; font-size:0.8rem;">
-                Already have an account? <a href="login.php" style="color:var(--primary);">Login here</a>
-            </p>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.php">Login Now</a></p>
+            </div>
         </div>
     </div>
 </body>

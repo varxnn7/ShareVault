@@ -1,6 +1,5 @@
 /**
- * ShareVault - Fully Optimized script.js
- * Features: Drag & Drop, AJAX Upload, Voice Notifications, and File Management
+ * ShareVault - Final Optimized script.js
  */
 
 const uploadForm = document.getElementById('uploadForm');
@@ -13,7 +12,13 @@ const passwordContainer = document.getElementById('passwordContainer');
 const toggleList = document.getElementById('toggleList');
 const fileList = document.getElementById('fileList');
 const uploadLoader = document.getElementById('uploadLoader');
+const emailSearch = document.getElementById('emailSearch');
+const emailDropdown = document.getElementById('emailDropdown');
+const selectedEmailsDiv = document.getElementById('selectedEmails');
 
+let selectedList = []; // Array to store shared emails
+
+// --- 1. File List Management ---
 if (toggleList) {
     toggleList.addEventListener('click', async () => {
         if (fileList.style.display === 'none' || fileList.style.display === '') {
@@ -46,7 +51,7 @@ if (toggleList) {
     });
 }
 
-// --- 2. Drag & Drop Logic ---
+// --- 2. Drag and Drop Logic ---
 if (uploadForm) {
     dropZone.addEventListener('click', () => fileInput.click());
 
@@ -88,7 +93,7 @@ if (uploadForm) {
         passwordContainer.style.display = accessMode.value === 'restricted' ? 'block' : 'none';
     });
 
-    // --- 3. AJAX Upload & Link Generation Logic ---
+    // --- 3. AJAX Upload Logic ---
     uploadForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -98,24 +103,25 @@ if (uploadForm) {
             return;
         }
 
-        // File Size Check (50MB)
         const MAX_SIZE_MB = 50;
         if (file.size > MAX_SIZE_MB * 1024 * 1024) {
             alert(`File is too large! Max size is ${MAX_SIZE_MB}MB.`);
             return;
         }
 
-        // UI Feedback
+        // UI Setup
         uploadLoader.style.display = 'flex';
         const progressContainer = document.getElementById('progressContainer');
         const progressBarFill = document.getElementById('progressBarFill');
         const progressPercent = document.getElementById('progressPercent');
         progressContainer.style.display = 'block';
 
+        // Fix: Define formData BEFORE appending to it
         const formData = new FormData();
         formData.append('file', file);
         formData.append('accessMode', accessMode.value);
         formData.append('password', document.getElementById('filePassword').value);
+        formData.append('sharedEmails', JSON.stringify(selectedList)); // Pass the email array
 
         const xhr = new XMLHttpRequest();
 
@@ -132,7 +138,6 @@ if (uploadForm) {
                 const result = JSON.parse(xhr.responseText);
 
                 if (xhr.status === 200 && result.status === 'success') {
-                    // Success UI Logic
                     uploadLoader.style.display = 'none';
                     resultArea.style.display = 'block';
 
@@ -141,10 +146,11 @@ if (uploadForm) {
                         result.link;
                     shareLink.value = fullURL;
 
-                    // --- SPEECH API TRIGGER ---
                     speakMessage("Upload complete. Thank you for using Share Vault. Your secure link is ready.");
 
                     uploadForm.reset();
+                    selectedList = []; // Clear emails after success
+                    renderTags();
                     dropZone.querySelector('p').innerHTML = "Drag & drop files or <span>Browse</span>";
                     dropZone.style.borderColor = "rgba(255, 255, 255, 0.2)";
                     progressContainer.style.display = 'none';
@@ -165,19 +171,67 @@ if (uploadForm) {
     });
 }
 
-// --- 4. Global Functions ---
+// --- 4. Email Search & Tagging System ---
+emailSearch.addEventListener('input', async (e) => {
+    const query = e.target.value;
+    if (query.length < 2) {
+        emailDropdown.style.display = 'none';
+        return;
+    }
 
-// Function to handle Text-to-Speech
+    try {
+        const response = await fetch(`search_emails.php?query=${query}`);
+        const emails = await response.json();
+
+        if (emails.length > 0) {
+            emailDropdown.innerHTML = emails.map(email => `
+                <div class="email-item" onclick="addEmailTag('${email}')">${email}</div>
+            `).join('');
+            emailDropdown.style.display = 'block';
+        } else {
+            emailDropdown.style.display = 'none';
+        }
+    } catch (err) {
+        console.error("Search failed");
+    }
+});
+
+window.addEmailTag = (email) => {
+    if (!selectedList.includes(email)) {
+        selectedList.push(email);
+        renderTags();
+    }
+    emailSearch.value = '';
+    emailDropdown.style.display = 'none';
+};
+
+window.removeEmailTag = (email) => {
+    selectedList = selectedList.filter(e => e !== email);
+    renderTags();
+};
+
+function renderTags() {
+    selectedEmailsDiv.innerHTML = selectedList.map(email => `
+        <span class="email-tag">
+            ${email} 
+            <i class='bx bx-x' onclick="removeEmailTag('${email}')"></i>
+        </span>
+    `).join('');
+}
+
+// Close dropdown on outside click
+document.addEventListener('click', (e) => {
+    if (emailSearch && !emailSearch.contains(e.target)) emailDropdown.style.display = 'none';
+});
+
+// --- 5. Global Utility Functions ---
 function speakMessage(message) {
     if ('speechSynthesis' in window) {
-        // Stop any current speech
         window.speechSynthesis.cancel();
-
         const utterThis = new SpeechSynthesisUtterance(message);
         utterThis.pitch = 1.1;
         utterThis.rate = 1.0;
         utterThis.lang = 'en-US';
-
         window.speechSynthesis.speak(utterThis);
     }
 }
@@ -190,8 +244,6 @@ async function deleteFile(fileKey) {
             if (result.status === 'success') {
                 const element = document.getElementById(`file-${fileKey}`);
                 if (element) element.remove();
-
-                // Voice feedback for removing a file
                 speakMessage("File removed from the vault.");
             } else {
                 alert("Error: " + result.message);
@@ -210,10 +262,7 @@ function copyLink() {
             const copyBtn = document.querySelector('.link-box button');
             const originalIcon = copyBtn.innerHTML;
             copyBtn.innerHTML = "<i class='bx bx-check'></i>";
-
-            // Voice Feedback for copy
             speakMessage("Link copied to clipboard.");
-
             setTimeout(() => copyBtn.innerHTML = originalIcon, 2000);
         });
     } else {
