@@ -39,7 +39,6 @@ body {
     z-index: 1;
 }
 
-/* --- Header & Branding --- */
 .main-header {
     display: flex;
     justify-content: space-between;
@@ -79,7 +78,6 @@ body {
     font-size: 0.95rem;
 }
 
-/* --- The Glass Card --- */
 .upload-card {
     position: relative;
     background: var(--card-bg);
@@ -92,7 +90,6 @@ body {
         inset 0 1px 1px rgba(255, 255, 255, 0.1);
 }
 
-/* --- Modern Upload Loader --- */
 .loader-overlay {
     position: absolute;
     top: 0;
@@ -146,7 +143,6 @@ body {
     }
 }
 
-/* --- Interactive Drop Zone --- */
 .drop-zone {
     border: 2px dashed rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.02);
@@ -183,7 +179,6 @@ body {
     font-weight: 700;
 }
 
-/* --- Modern Form Inputs --- */
 .setting-item label {
     font-size: 0.85rem;
     font-weight: 600;
@@ -213,7 +208,6 @@ select:focus,
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
 }
 
-/* --- Buttons --- */
 .btn-primary {
     width: 100%;
     background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
@@ -225,7 +219,6 @@ select:focus,
     font-size: 1rem;
     cursor: pointer;
     margin-top: 15px;
-    /* Added spacing to prevent overlapping the settings above */
     box-shadow: 0 10px 20px -5px var(--primary-glow);
     display: block;
     position: relative;
@@ -233,11 +226,9 @@ select:focus,
 
 .settings {
     margin-bottom: 30px;
-    /* Increased bottom margin */
     display: flex;
     flex-direction: column;
     gap: 15px;
-    /* Adds consistent space between access mode and password field */
 }
 
 .btn-primary:hover {

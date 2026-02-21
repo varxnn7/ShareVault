@@ -1,6 +1,3 @@
-/**
- * ShareVault - Final Optimized script.js
- */
 
 const uploadForm = document.getElementById('uploadForm');
 const fileInput = document.getElementById('fileInput');
@@ -18,7 +15,6 @@ const selectedEmailsDiv = document.getElementById('selectedEmails');
 
 let selectedList = []; // Array to store shared emails
 
-// --- 1. File List Management ---
 if (toggleList) {
     toggleList.addEventListener('click', async () => {
         if (fileList.style.display === 'none' || fileList.style.display === '') {
@@ -51,7 +47,7 @@ if (toggleList) {
     });
 }
 
-// --- 2. Drag and Drop Logic ---
+// Drag N Drop
 if (uploadForm) {
     dropZone.addEventListener('click', () => fileInput.click());
 
@@ -93,7 +89,7 @@ if (uploadForm) {
         passwordContainer.style.display = accessMode.value === 'restricted' ? 'block' : 'none';
     });
 
-    // --- 3. AJAX Upload Logic ---
+    // AJAX upload with progress
     uploadForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -116,7 +112,7 @@ if (uploadForm) {
         const progressPercent = document.getElementById('progressPercent');
         progressContainer.style.display = 'block';
 
-        // Fix: Define formData BEFORE appending to it
+        // Prepare form data
         const formData = new FormData();
         formData.append('file', file);
         formData.append('accessMode', accessMode.value);
@@ -171,7 +167,7 @@ if (uploadForm) {
     });
 }
 
-// --- 4. Email Search & Tagging System ---
+// Search Via Emails
 emailSearch.addEventListener('input', async (e) => {
     const query = e.target.value;
     if (query.length < 2) {
@@ -224,7 +220,7 @@ document.addEventListener('click', (e) => {
     if (emailSearch && !emailSearch.contains(e.target)) emailDropdown.style.display = 'none';
 });
 
-// --- 5. Global Utility Functions ---
+// Global Functions for Voice Feedback and File Deletion
 function speakMessage(message) {
     if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();

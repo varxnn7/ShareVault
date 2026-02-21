@@ -24,7 +24,7 @@ function sendShareEmail($recipientEmail, $fileLink, $fileName)
         $mail->SMTPSecure = 'PHPMailer::ENCRYPTION_STARTTLS';
 
         //SENDER
-        $mail->setFrom('varunkukreja017@gmail.com', 'ShareVault'); // 🔴 Your Verified Sender Email
+        $mail->setFrom('varunkukreja017@gmail.com', 'ShareVault'); // Your Verified Sender Email
 
         // RECIPIENT
         $mail->addAddress($recipientEmail);

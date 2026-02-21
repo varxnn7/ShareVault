@@ -1,7 +1,7 @@
 <?php
 ob_start();
 session_start();
-require_once 'mail.php'; // Direct link because both are in the public folder
+require_once 'mail.php'; 
 require_once '../includes/db.php';
 
 ob_clean();
