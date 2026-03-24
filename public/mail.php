@@ -1,6 +1,7 @@
 <?php
 // Since this is now in the public folder, we go up one level to find vendor
 require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../includes/env.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -16,20 +17,19 @@ function sendShareEmail($recipientEmail, $fileLink, $fileName)
         // For Production
         $mail->SMTPDebug = 0;
         $mail->isSMTP();
-        $mail->Host       = 'smtp-relay.brevo.com';
+        $mail->Host       = $_ENV['SMTP_HOST'] ?? 'smtp-relay.brevo.com';
         $mail->SMTPAuth   = true;
         $mail->Port       = 587;
-        $mail->Username   = 'a2d776001@smtp-brevo.com';
-        $mail->Password   = 'xsmtpsib-4efa26fbae36647c6f19017408e66803fa9d2b1bf334bac0a20686b3da481ff1-4aZBIyCqf1eHmNmR';
+        $mail->Username   = $_ENV['SMTP_USERNAME'] ?? '';
+        $mail->Password   = $_ENV['SMTP_PASSWORD'] ?? '';
         $mail->SMTPSecure = 'PHPMailer::ENCRYPTION_STARTTLS';
 
         //SENDER
-        $mail->setFrom('varunkukreja017@gmail.com', 'ShareVault'); // Your Verified Sender Email
+        $senderEmail = $_ENV['SMTP_FROM_EMAIL'] ?? 'varunkukreja017@gmail.com';
+        $mail->setFrom($senderEmail, 'ShareVault'); // Your Verified Sender Email
 
         // RECIPIENT
         $mail->addAddress($recipientEmail);
-
-
         $mail->isHTML(true);
         $mail->Subject = 'New File Shared: ' . $fileName;
         $mail->Body    = "
